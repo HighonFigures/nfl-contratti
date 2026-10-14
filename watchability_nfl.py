@@ -14,11 +14,17 @@ Misure, sullo stesso percorso win probability chiuso sull'esito finale (1, 0 o 0
   ei     somma dei valori assoluti delle variazioni (excitement index di inpredictable).
   ei_q4  la stessa somma limitata agli ultimi 15 minuti e ai supplementari.
   epa_*  EPA su passaggi e corse della squadra in possesso: riserva, se stats_team_week tarda.
+  pgwe_casa  post-game win expectancy della squadra di casa: quante volte vince chi gioca cosi'. Logistica
+             sulla differenza di EPA di tutte le giocate (anche special team), senza termine per il campo:
+             a parita' di gioco la sede non conta. Stimata su 1.861 partite 2019-2025 (AUC 0,986).
 
 Senza spoiler, come faceva Thuuz:
   perche   una frase su che partita e' stata, che non dice chi vince ne' il punteggio.
   da_dove  da quando conviene guardarla: l'ultimo momento da cui resta almeno l'80% della tensione
-           (variazione quadratica) della partita. Pareto: il minimo di gioco per il grosso del segnale.
+           della partita. Pareto: il minimo di gioco per il grosso del segnale. Tensione = meta' sorpresa
+           (variazione di win probability avvenuta) e meta' suspense (variazione attesa, dato punteggio e
+           tempo: suspense_atteso.csv, 2021-2025), come in Ely, Frankel e Kamenica; la letteratura con dati
+           di audience (Simonov e altri 2022, Buraimo e altri 2020, Kaplan 2020) trova effetti per entrambe.
            Sulle partite senza tensione (30% meno tese 2019-2025) il punto d'inizio non ha senso: highlights.
   da_min   lo stesso punto in minuti di gioco trascorsi (0 = calcio d'inizio). Mai oltre il 55':
            un punto d'inizio piu' tardi rivelerebbe un finale in volata o i supplementari.
@@ -28,6 +34,7 @@ Uso:  python watchability_nfl.py            (stagione in corso)
 """
 import datetime as dt
 import sys
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
@@ -36,6 +43,8 @@ URL = "https://github.com/nflverse/nflverse-data/releases/download/pbp/play_by_p
 COLS = ["game_id", "season", "week", "season_type", "home_team", "away_team", "qtr", "desc",
         "game_seconds_remaining", "vegas_home_wp", "home_score", "away_score", "posteam", "play_type", "epa"]
 OUT = "watchability_nfl.csv"
+PGWE_B = 0.4406         # logit della vittoria per punto di differenza di EPA
+SUSPENSE = pd.read_csv(Path(__file__).with_name("suspense_atteso.csv"), index_col=0).to_numpy()
 
 # Soglie dalle 1.936 partite di stagione regolare 2019-2025 (percentili)
 LNQV_P30, LNQV_P50, LNQV_P70, LNQV_P90 = -2.289, -1.722, -1.212, -0.63
@@ -93,11 +102,19 @@ def racconto(lnqv, tardi, primo_tempo, cambi, punti, epa_tot, epa_min):
     return frase[0].upper() + frase[1:]
 
 
-def da_dove(lnqv, el, d2):
-    """Ultimo istante da cui resta almeno QUOTA della tensione, arrotondato al minuto prima."""
+def suspense(wp, el):
+    """Variazione quadratica attesa della win probability per giocata, dato punteggio (wp) e tempo."""
+    w = np.clip((np.nan_to_num(wp, nan=0.5) * 20).astype(int), 0, 19)
+    t = np.clip((el // 120).astype(int), 0, SUSPENSE.shape[1] - 1)
+    return SUSPENSE[w, t]
+
+
+def da_dove(lnqv, el, d2, sus):
+    """Ultimo istante da cui resta almeno QUOTA della tensione (meta' sorpresa, meta' suspense)."""
     if lnqv < LNQV_P30: return "Solo highlights", ""
-    resto = np.cumsum(d2[::-1])[::-1]
-    ok = np.where(resto >= QUOTA * d2.sum())[0]
+    tens = 0.5 * d2 / max(d2.sum(), 1e-9) + 0.5 * sus / max(sus.sum(), 1e-9)
+    resto = np.cumsum(tens[::-1])[::-1]
+    ok = np.where(resto >= QUOTA * tens.sum())[0]
     s = float(el[ok.max()]) if len(ok) else 0.0
     s = min(ULTIMO, 60 * np.floor(s / 60))
     if s < DALL_INIZIO: return "Dall'inizio", 0
@@ -127,7 +144,9 @@ def misure(g):
     tardi = float(d2[el >= 3600 - 480].sum() / qv) if qv > 0 else 0.0
     primo = float(d2[el < 1800].sum() / qv) if qv > 0 else 0.0
     eh, ea = float(epa.get(g["home_team"].iloc[0], 0.0)), float(epa.get(g["away_team"].iloc[0], 0.0))
-    dd, dmin = da_dove(lnqv, el, d2)
+    dd, dmin = da_dove(lnqv, el, d2, suspense(wp, el))
+    tutte = g[g["epa"].notna() & g["posteam"].notna() & (g["play_type"] != "no_play")].groupby("posteam")["epa"].sum()
+    diff = float(tutte.get(g["home_team"].iloc[0], 0.0) - tutte.get(g["away_team"].iloc[0], 0.0))
     return pd.Series({
         "home_score": int(hs), "away_score": int(as_), "ot": int(g["qtr"].max() > 4),
         "qv": round(qv, 5), "ln_qv": round(float(np.log(max(qv, 1e-6))), 4),
@@ -138,6 +157,7 @@ def misure(g):
         "quota_finale": round(tardi, 3), "cambi": cambi_inerzia(percorso),
         "perche": racconto(lnqv, tardi, primo, cambi_inerzia(percorso), hs + as_, eh + ea, min(eh, ea)),
         "da_dove": dd, "da_min": dmin,
+        "pgwe_casa": round(1 / (1 + np.exp(-PGWE_B * diff)), 3),
     })
 
 
