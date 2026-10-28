@@ -33,6 +33,7 @@ Uso:  python watchability_nfl.py            (stagione in corso)
       python watchability_nfl.py 2025 2026  (stagioni scelte)
 """
 import datetime as dt
+import io
 import sys
 from pathlib import Path
 
@@ -180,9 +181,25 @@ def main():
     anni = [int(a) for a in sys.argv[1:]] or [stagione_in_corso()]
     tab = pd.concat([stagione(a) for a in anni], ignore_index=True)
     tab = tab.sort_values(["season", "week", "game_id"])
-    tab["aggiornato"] = dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+    adesso = dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+    # 'aggiornato' e' il momento in cui la riga di una partita e' comparsa o cambiata: le righe uguali tengono
+    # la data di prima, cosi' il file cambia (e il workflow orario committa) solo quando nflverse porta qualcosa di nuovo.
+    prima = {}
+    if Path(OUT).exists():
+        vecchio = pd.read_csv(OUT, dtype=str, keep_default_na=False)
+        if "aggiornato" in vecchio.columns:
+            cols = [c for c in vecchio.columns if c != "aggiornato"]
+            prima = {r["game_id"]: (",".join(r[c] for c in cols), r["aggiornato"]) for _, r in vecchio.iterrows()}
+    testo = pd.read_csv(io.StringIO(tab.to_csv(index=False)), dtype=str, keep_default_na=False)
+    cols = [c for c in testo.columns if c != "aggiornato"]
+    agg = []
+    for _, r in testo.iterrows():
+        v = prima.get(r["game_id"])
+        agg.append(v[1] if v and v[0] == ",".join(r[c] for c in cols) else adesso)
+    tab["aggiornato"] = agg
     tab.to_csv(OUT, index=False)
-    print(f"{len(tab)} partite scritte in {OUT}")
+    nuove = sum(1 for a in agg if a == adesso)
+    print(f"{len(tab)} partite scritte in {OUT}, {nuove} nuove o cambiate")
 
 
 if __name__ == "__main__":

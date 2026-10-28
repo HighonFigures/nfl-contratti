@@ -1,12 +1,17 @@
 name: Watchability NFL
 
-# Il play-by-play di nflverse si aggiorna di notte durante la stagione: tre passaggi coprono
-# giovedi', domenica e lunedi' sera americani. Si puo' lanciare anche a mano da Actions.
+# Ogni ora: il dramma deve arrivare nel foglio appena nflverse pubblica il play-by-play (di solito nella
+# notte europea dopo la partita). Se il CSV non cambia non si committa niente. Il foglio usa il Gambletron
+# solo per le partite finite che qui non ci sono ancora, e lo sostituisce appena compaiono.
+# Si puo' lanciare anche a mano da Actions.
 on:
   schedule:
-    - cron: '30 9 * * 2,5,6'
-    - cron: '30 13 * * 1'
+    - cron: '23 * * * *'
   workflow_dispatch:
+
+concurrency:
+  group: watchability-nfl
+  cancel-in-progress: false
 
 permissions:
   contents: write
