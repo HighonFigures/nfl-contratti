@@ -110,6 +110,7 @@ game_id,season,week,season_type,home,away,home_score,away_score,ot,qv,ln_qv,ei,e
 2026_08_ATL_TB,2026,8,REG,TB,ATL,16,0,0,0.07693,-2.5649,2.0574,0.1264,-9.88,-27.11,152,0.004,0,"Esito mai davvero in bilico: tanti errori, poca qualita'. Bastano gli highlights.",Solo highlights,,1.0,2026-11-01 22:54 UTC
 2026_08_BAL_BUF,2026,8,REG,BUF,BAL,36,10,0,0.14122,-1.9575,2.9682,0.0561,2.04,-23.84,176,0.0,0,"Poca suspense: tanti errori, poca qualita'. Meglio la versione ridotta.","Dal 1° quarto, 5:00 da giocare (minuto 10)",10,1.0,2026-11-01 22:54 UTC
 2026_08_CAR_GB,2026,8,REG,GB,CAR,27,19,0,0.13937,-1.9706,3.1891,0.46,3.52,-10.42,188,0.073,0,Poca suspense. Meglio la versione ridotta.,Dall'inizio,0,0.829,2026-10-30 05:04 UTC
+2026_08_CHI_SEA,2026,8,REG,SEA,CHI,17,34,0,0.16386,-1.8087,3.4988,1.0197,-9.27,12.1,173,0.023,0,Poca suspense. Meglio la versione ridotta.,"Dal 2° quarto, 13:00 da giocare (minuto 17)",17,0.0,2026-11-03 12:02 UTC
 2026_08_CLE_PIT,2026,8,REG,PIT,CLE,27,6,0,0.0608,-2.8001,1.6569,0.0529,7.59,-17.35,171,0.0,0,Esito mai davvero in bilico. Bastano gli highlights.,Solo highlights,,1.0,2026-11-01 22:54 UTC
 2026_08_IND_JAX,2026,8,REG,JAX,IND,42,7,0,0.02099,-3.8637,0.7256,0.0002,10.53,-28.15,157,0.0,0,Esito mai davvero in bilico. Bastano gli highlights.,Solo highlights,,1.0,2026-11-01 22:54 UTC
 2026_08_KC_DEN,2026,8,REG,DEN,KC,28,24,0,0.59755,-0.5149,5.4221,2.4376,6.27,10.92,179,0.668,4,Fra le partite piu' tese dell'anno: l'inerzia cambia di mano piu' volte.,"Dal 2° quarto, 5:00 da giocare (minuto 25)",25,0.506,2026-11-02 02:35 UTC
