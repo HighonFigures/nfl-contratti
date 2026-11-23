@@ -152,8 +152,11 @@ game_id,season,week,season_type,home,away,home_score,away_score,ot,qv,ln_qv,ei,e
 2026_11_ARI_KC,2026,11,REG,KC,ARI,34,7,0,0.00044,-7.7361,0.1025,0.0006,18.13,-6.92,165,0.0,0,Esito mai davvero in bilico. Bastano gli highlights.,Solo highlights,,1.0,2026-11-22 22:31 UTC
 2026_11_BAL_CAR,2026,11,REG,CAR,BAL,35,33,0,0.36742,-1.0012,4.8819,1.8026,4.25,2.26,185,0.41,1,"Partita tesa: momenti caldi lungo tutta la partita, tanti punti.","Dal 2° quarto, 10:00 da giocare (minuto 20)",20,0.796,2026-11-22 22:31 UTC
 2026_11_IND_HOU,2026,11,REG,HOU,IND,26,3,0,0.01627,-4.1187,0.7643,0.0044,4.06,-14.95,148,0.0,0,Esito mai davvero in bilico. Bastano gli highlights.,Solo highlights,,1.0,2026-11-20 13:08 UTC
+2026_11_JAX_NYG,2026,11,REG,NYG,JAX,23,18,0,0.1656,-1.7982,3.8345,1.3424,-8.5,-7.45,187,0.288,1,Poca suspense. Meglio la versione ridotta.,"Dal 1° quarto, 1:00 da giocare (minuto 14)",14,0.469,2026-11-23 03:46 UTC
+2026_11_LV_DEN,2026,11,REG,DEN,LV,38,24,0,0.03987,-3.2221,1.4875,0.3114,4.74,-1.46,192,0.077,0,Esito mai davvero in bilico: tanti punti. Bastano gli highlights.,Solo highlights,,0.957,2026-11-23 03:46 UTC
 2026_11_MIA_BUF,2026,11,REG,BUF,MIA,26,9,0,0.0018,-6.3219,0.2391,0.0228,3.07,-14.43,175,0.0,0,Esito mai davvero in bilico. Bastano gli highlights.,Solo highlights,,1.0,2026-11-22 22:31 UTC
 2026_11_NO_CHI,2026,11,REG,CHI,NO,21,13,0,0.03106,-3.4719,1.4646,0.263,-5.48,-9.49,169,0.015,0,Esito mai davvero in bilico. Bastano gli highlights.,Solo highlights,,0.911,2026-11-22 22:31 UTC
+2026_11_NYJ_LAC,2026,11,REG,LAC,NYJ,24,27,0,0.10116,-2.2911,2.6679,1.1184,6.9,13.39,156,0.269,0,Esito mai davvero in bilico: giocata bene da entrambe. Bastano gli highlights.,Solo highlights,,0.032,2026-11-23 03:46 UTC
 2026_11_PIT_PHI,2026,11,REG,PHI,PIT,19,16,0,0.1328,-2.0189,3.2757,0.8783,-7.22,-8.75,168,0.123,1,Poca suspense. Meglio la versione ridotta.,Dall'inizio del 2° quarto (minuto 15),15,0.736,2026-11-22 22:31 UTC
 2026_11_TB_DET,2026,11,REG,DET,TB,31,21,0,0.09255,-2.38,2.5078,0.4888,15.64,3.78,168,0.056,0,Esito mai davvero in bilico: giocata bene da entrambe. Bastano gli highlights.,Solo highlights,,0.988,2026-11-22 22:31 UTC
 2026_11_TEN_DAL,2026,11,REG,DAL,TEN,51,30,0,0.01566,-4.1567,0.9053,0.0196,27.52,2.47,178,0.001,0,Esito mai davvero in bilico: tanti punti. Bastano gli highlights.,Solo highlights,,1.0,2026-11-22 22:31 UTC
